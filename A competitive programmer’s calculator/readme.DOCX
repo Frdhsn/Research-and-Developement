@@ -1,0 +1,28 @@
+Course: IT 3208 Microprocessor and Interfacing Lab
+Project Title: A competitive programmer’s calculator using Assembly Language
+
+
+Group Members:
+Member1 : Sabbir Ahmed
+Roll    : 2216
+Member2 : Md. Farhad Hossain
+Roll    : 2010
+Member3 : Bhabna Mukherjee
+Roll    : 1985
+
+Project overview:
+
+Our calculator can calculate basic arithmetic operations like add,sub,mul,div. Moreover, these operations can be done:
+  a.	Greatest common divisor(GCD) and least common multiple(LCM) of two numbers.
+  b.	Factorial of a number
+  c.	Fibonacci number
+  d.	nCr, nPr
+  e.	Exponent (i.e. a^b)
+  f.	Modulo
+  g.	Big mod
+  h.	Primality check of a number
+  i.	divisor , multiple check
+  j.	Square root of a number
+And many operations which are needed in problem solving!
+
+
