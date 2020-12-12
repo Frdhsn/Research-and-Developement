@@ -5,8 +5,9 @@
 #include <math.h>
 #include <windows.h>
 #include <mmsystem.h>
+#include <algorithm>
 
-
+using namespace std;
 int carStatus = 0;
 int carStatus1 = 0;
 
@@ -14,12 +15,8 @@ int meghStatus = 1;
 int sunStatus =  1;
 
 
-float carX = 0;
-float carY = 0;
 
-float carX1 = 0;
-float carY1 = 0;
-
+float in=2;
 float sunX = 0;
 float sunY = 350;
 
@@ -31,8 +28,11 @@ float hilly=0;
 
 float treex=0;
 float treey=0;
+float grassx=0;
+float grassy=0;
 
 float move, angle;
+void grass();
 
 		void DrawCircle(float cx, float cy, float r, int num_segments){
 
@@ -488,78 +488,7 @@ float move, angle;
 
 
 
-//grass0
-	glBegin(GL_POLYGON); //Grass
-	glColor3f(0.0, 0.6, 0.3);
-	glVertex2i(50, 110);
-	glVertex2i(45, 130);
-	glVertex2i(25, 140);
-	glVertex2i(45, 130);
-	glVertex2i(35, 160);
-	glVertex2i(45, 130);
-	glVertex2i(50, 180);
-	glColor3f(0.8, 0.8, 0.1);
-	glVertex2i(55, 140);
-	glVertex2i(75, 160);
-	glVertex2i(65, 130);
-	glVertex2i(75, 140);
-	glVertex2i(65, 130);
-	glVertex2i(60, 110);
-	glEnd();
 /*
-//grass1
-	glBegin(GL_POLYGON); //Grass
-	glColor3f(0.0, 0.6, 0.3);
-	glVertex2i(495, 110);
-	glVertex2i(480, 130);
-	glVertex2i(470, 140);
-	glVertex2i(490, 130);
-	glVertex2i(480, 160);
-	glVertex2i(500, 130);
-	glVertex2i(505, 180);
-	glColor3f(0.8, 0.8, 0.1);
-	glVertex2i(510, 140);
-	glVertex2i(530, 160);
-	glVertex2i(520, 130);
-	glVertex2i(540, 140);
-	glVertex2i(530, 130);
-	glVertex2i(515, 110);
-	glEnd();
-
-	glBegin(GL_POLYGON); //Grass
-	glColor3f(0.0, 0.6, 0.1);
-	glVertex2i(635, 100);
-	glVertex2i(620, 120);
-	glVertex2i(610, 130);
-	glVertex2i(630, 120);
-	glVertex2i(620, 150);
-	glVertex2i(640, 130);
-	glVertex2i(645, 170);
-	glColor3f(0.8, 0.8, 0.1);
-	glVertex2i(650, 130);
-	glVertex2i(670, 150);
-	glVertex2i(660, 120);
-	glVertex2i(680, 130);
-	glVertex2i(670, 120);
-	glVertex2i(655, 100);
-	glEnd();
-	glBegin(GL_POLYGON); //Grass2
-	glColor3f(0.0, 0.6, 0.1);
-	glVertex2i(935, 100);
-	glVertex2i(920, 120);
-	glVertex2i(910, 130);
-	glVertex2i(930, 120);
-	glVertex2i(920, 150);
-	glVertex2i(940, 130);
-	glVertex2i(945, 170);
-	glColor3f(0.8, 0.8, 0.1);
-	glVertex2i(950, 130);
-	glVertex2i(970, 150);
-	glVertex2i(960, 120);
-	glVertex2i(980, 130);
-	glVertex2i(970, 120);
-	glVertex2i(955, 100);
-	glEnd();
 
     glBegin(GL_POLYGON); //Grass2
 	glColor3f(0.0, 0.6, 0.1);
@@ -617,11 +546,12 @@ float move, angle;
 }
     void movetree()
     {
-			treex +=2;
+			treex +=in;
 		if (treex>2000)
 		{
 			treex = -200;
 		}
+
 		glPushMatrix();
 		glTranslatef(treex, treey, 0);
 		tree(850);
@@ -639,132 +569,49 @@ float move, angle;
       			glPushMatrix();
 		glTranslatef(treex-1200, treey, 0);
 		house(870);
+		grassx+=in;
+		if(grassx>1000)
+            grassx=0;
 		glPopMatrix();
-
+		glPushMatrix();
+		glTranslatef(grassx-1000, 0, 0);
+		grass();
+		glPopMatrix();
+       in+=0.001;
+       in=min(in,100-in);
     }
+void grass(){
 
-void movecar(int x)
-	{
-	glBegin(GL_QUADS); //car chaka
-	glColor3f(1.0, 1.0, 1.0);
-	glVertex2i(110,790);
-	glVertex2i(120,790);
-	glVertex2i(120,800);
-	glVertex2i(110,800);
-
-    glEnd();
-
-	glBegin(GL_QUADS); //car chaka
-	glColor3f(1.0, 1.0, 1.0);
-	glVertex2i(180,790);
-	glVertex2i(190,790);
-	glVertex2i(190,800);
-	glVertex2i(180,800);
-
-    glEnd();
-
-    glBegin(GL_QUADS); //car upper
-	glColor3f(1.9, 0.0, 0.0);
-	glVertex2i(100,800);
-	glVertex2i(200, 800);
-	glVertex2i(200,850);
-	glVertex2i(100,850);
-
-    glEnd();
-
-	glBegin(GL_POLYGON); //car
-	glColor3f(0.0, 1.8, 0.5);
-	glVertex2i(120,850);
-	glVertex2i(180, 850);
-	glVertex2i(180,890);
-	glVertex2i(120,890);
-	glEnd();
-
-
-
-
-
+int x,y;
+float i=1,j=1,k=1;
+//grass1
+for(y=0;y<1400;y+=100)
+    {
+    for(x=-7;x<8000;x+=70)
+	{glBegin(GL_POLYGON); //Grass
+	glColor3ub(1, 100, 1);
+	glVertex2f(45*i+x*k, 110*i+y*j);
+	glVertex2f(30*i+x*k, 130*i+y*j);
+	glVertex2f(20*i+x*k, 140*i+y*j);
+	glVertex2f(40*i+x*k, 130*i+y*j);
+	glVertex2f(30*i+x*k, 160*i+y*j);
+	glVertex2f(50*i+x*k, 130*i+y*j);
+	glVertex2f(55*i+x*k, 180*i+y*j);
+	glColor3ub(200, 220, 25);
+	glVertex2f(60*i+x*k, 140*i+y*j);
+	glVertex2f(80*i+x*k, 160*i+y*j);
+	glVertex2f(70*i+x*k, 130*i+y*j);
+	glVertex2f(90*i+x*k, 140*i+y*j);
+	glVertex2f(80*i+x*k, 130*i+y*j);
+	glVertex2f(65*i+x*k, 110*i+y*j);
+	glEnd();}
+	i=i-0.07;
+	j=j-0.025;
+	k=k-0.04;
 	}
-
-void movecar1(int x){
-
-	//2nd car
-
-
-	glBegin(GL_QUADS); //car chaka
-	glColor3f(1.0, 1.0, 1.0);
-	glVertex2i(110,690);
-	glVertex2i(120,690);
-	glVertex2i(120,700);
-	glVertex2i(110,700);
-
-    glEnd();
-
-	glBegin(GL_QUADS); //car chaka
-	glColor3f(1.0, 1.0, 1.0);
-	glVertex2i(180,690);
-	glVertex2i(190,690);
-	glVertex2i(190,700);
-	glVertex2i(180,700);
-
-    glEnd();
-
-    glBegin(GL_QUADS); //car
-	glColor3f(1.9, 0.0, 0.0);
-	glVertex2i(100,700);
-	glVertex2i(200, 700);
-	glVertex2i(200,750);
-	glVertex2i(100,750);
-
-    glEnd();
-
-	glBegin(GL_POLYGON); //car
-	glColor3f(0.0, 1.8, 0.5);
-	glVertex2i(120,750);
-	glVertex2i(180, 750);
-	glVertex2i(180,790);
-	glVertex2i(120,790);
-	glEnd();
-
-
-
 
 
 }
-
-
-void car()
-	{
-		if (carStatus == 1)
-		{
-			carX +=1;
-		}
-		if (carX>2000)
-		{
-			carX = -600;
-		}
-		glPushMatrix();
-		glTranslatef(carX, carY, 0);
-		movecar(1);
-		glPopMatrix();
-	}
-
-void car1()
-	{
-		if (carStatus1 == 1)
-		{
-			carX1 +=.5;
-		}
-	if (carX1>2000)
-	{
-		carX1 = -600;
-	}
-		glPushMatrix();
-		glTranslatef(carX1, carY1, 0);
-		movecar1(1);
-		glPopMatrix();
-	}
-
 
 void keyboard(unsigned char key,int x,int y)
 
@@ -826,20 +673,203 @@ void keyboard(unsigned char key,int x,int y)
 
 
 	}
+void face()
+{
+    float i=60,x=370,y=0;
+    glBegin(GL_POLYGON);
+	glColor3ub(150, 100, 30);  //borka
+	glVertex2f(16.71*i+x, 1.68*i+y);
+	glVertex2f(25.17*i+x, 1.7*i+y);
+	glVertex2f(21.99*i+x, 11.16*i+y);
+	glVertex2f(19.29*i+x, 10.82*i+y);
+	glEnd();
+    glBegin(GL_POLYGON); //Grass
+	glColor3ub(25, 25, 1);
+	glVertex2f(22.35*i+x, 15.38*i+y);
+	glVertex2f(19.8*i+x, 16.01*i+y);
+	glVertex2f(18.47*i+x, 15.12*i+y);
+	glVertex2f(18.43*i+x, 14.48*i+y);
+	glVertex2f(21.29*i+x, 15*i+y);
+	glEnd();
+	 glBegin(GL_POLYGON); //Grass
+	glColor3ub(25, 50, 1);
+	glVertex2f(21.27*i+x, 10.68*i+y);
+	glVertex2f(23.59*i+x, 10.86*i+y);
+	glVertex2f(22.35*i+x, 15.38*i+y);
+	glVertex2f(21.29*i+x, 15*i+y);
+	glEnd();
+	 glBegin(GL_POLYGON); //Grass
+	glColor3ub(25, 25, 1);
+	glVertex2f(20.81*i+x, 9.6*i+y);
+	glVertex2f(22.55*i+x, 9.5*i+y);
+	glVertex2f(22.35*i+x, 15.38*i+y);
+	glVertex2f(21.29*i+x, 15*i+y);
+	glEnd();
 
+	 glBegin(GL_POLYGON); //nak
+	glColor3ub(221, 190, 196);
+	glVertex2f(18.09*i+x, 12.48*i+y);
+	glVertex2f(18.55*i+x, 12.36*i+y);
+	glVertex2f(18.53*i+x, 13.12*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(241, 190, 196);
+	glVertex2f(18.55*i+x, 12.36*i+y);
+	glVertex2f(18.53*i+x, 13.12*i+y);
+	glVertex2f(19.11*i+x, 13.36*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(250, 250, 250); //chokh
+	glVertex2f(18.53*i+x, 13.56*i+y);
+	glVertex2f(18.53*i+x, 13.12*i+y);
+	glVertex2f(19.11*i+x, 13.36*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(221, 170, 196);
+	glVertex2f(19.11*i+x, 13.36*i+y);
+	glVertex2f(18.55*i+x, 12.36*i+y);
+	glVertex2f(18.41*i+x, 12.02*i+y);
+	glVertex2f(19.25*i+x, 11.92*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(241, 190, 186);
+	glVertex2f(19.11*i+x, 13.36*i+y);
+	glVertex2f(19.25*i+x, 11.92*i+y);
+	glVertex2f(19.65*i+x, 13.74*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(221, 210, 196);
+	glVertex2f(19.65*i+x, 13.74*i+y);
+	glVertex2f(18.43*i+x, 14.48*i+y);
+	glVertex2f(18.53*i+x, 13.56*i+y);
+	glVertex2f(19.11*i+x, 13.36*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(231, 200, 206);  //chinn
+	glVertex2f(18.41*i+x, 11.68*i+y);
+	glVertex2f(18.47*i+x, 11.26*i+y);
+	glVertex2f(19.29*i+x, 10.82*i+y);
+	glVertex2f(19.25*i+x, 11.92*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(231, 180, 176);  //chinnm-rvo
+	glVertex2f(20.53*i+x, 11.8*i+y);
+	glVertex2f(19.29*i+x, 10.82*i+y);
+	glVertex2f(19.25*i+x, 11.92*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(211, 190, 196);  //rvs
+	glVertex2f(20.53*i+x, 11.8*i+y);
+	glVertex2f(19.29*i+x, 10.82*i+y);
+	glVertex2f(20.93*i+x, 11*i+y);
+	glEnd();
+    glBegin(GL_POLYGON);
+	glColor3ub(201, 190, 176);  //uvs
+	glVertex2f(20.53*i+x, 11.8*i+y);
+	glVertex2f(21.29*i+x, 15*i+y);
+	glVertex2f(20.93*i+x, 11*i+y);
+	glEnd();
+	 glBegin(GL_POLYGON);
+	glColor3ub(201, 180, 166);  //uvw
+	glVertex2f(20.53*i+x, 11.8*i+y);
+	glVertex2f(21.29*i+x, 15*i+y);
+	glVertex2f(20.28*i+x, 13.03*i+y);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(201, 150, 196);  //uvw
+	glVertex2f(20.53*i+x, 11.8*i+y);
+	glVertex2f(19.25*i+x, 11.92*i+y);
+	glVertex2f(20.28*i+x, 13.03*i+y);
+	glEnd();
+	 glBegin(GL_POLYGON);
+	glColor3ub(191, 180, 156);  //uvb
+	glVertex2f(19.65*i+x, 13.74*i+y);
+	glVertex2f(21.29*i+x, 15*i+y);
+	glVertex2f(20.28*i+x, 13.03*i+y);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	glColor3ub(201, 160, 166);  //ubo
+	glVertex2f(19.65*i+x, 13.74*i+y);
+	glVertex2f(19.25*i+x, 11.92*i+y);
+	glVertex2f(20.28*i+x, 13.03*i+y);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	glColor3ub(181, 180, 186);  //bug
+	glVertex2f(19.65*i+x, 13.74*i+y);
+	glVertex2f(21.29*i+x, 15*i+y);
+	glVertex2f(18.43*i+x, 14.48*i+y);
+	glEnd();
+
+
+
+	/*
+	glVertex2f(18.41*i+x, 12.02*i+y);
+	glVertex2f(19.25*i+x, 11.92*i+y);
+	glVertex2f(19.65*i+x, 13.74*i+y);
+	glVertex2f(18.43*i+x, 14.48*i+y);
+	glVertex2f(18.53*i+x, 13.56*i+y);
+	glVertex2f(18.53*i+x, 13.12*i+y);
+	glVertex2f(18.09*i+x, 12.48*i+y);
+	glEnd();
+  */
+}
+void frame()
+{
+    glBegin(GL_POLYGON);
+	glColor3ub(39, 92, 117);  //up
+	glVertex2f(0,1600);
+	glVertex2f(2000,1600);
+	glVertex2f(1800, 1440);
+	glVertex2f(200, 1440);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(39, 92, 117);  //down
+	glVertex2f(0,0);
+	glVertex2f(2000,0);
+	glVertex2f(1800, 160);
+	glVertex2f(200, 160);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glColor3ub(44, 127, 163);  //left
+	glVertex2f(0,1600);
+	glVertex2f(200, 1440);
+	glVertex2f(200, 160);
+	glVertex2f(0, 0);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	glColor3ub(44, 127, 163);  //down
+	glVertex2f(2000,0);
+	glVertex2f(2000,1600);
+	glVertex2f(1800, 1440);
+	glVertex2f(1800, 160);
+	glEnd();
+
+}
 
    void myDisplay(void)
 	{
+
+
+	        //face();
 			 sky();
 			 moveSun();
 			 movehill();
+
 			 //road();
 			// car();
 			 //car1();
 			 //house(80);
 			 ground();
+
 			 movemegh();
 			 movetree();
+			 //grass();
+			 frame();
+            face();
+
 			 glFlush();
 			 glutPostRedisplay();
 			 glutSwapBuffers();
@@ -852,12 +882,12 @@ void myInit(void)
 	glPointSize(0.0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, 2000.0, 0.0, 1500.0);
+	gluOrtho2D(0.0, 2000.0, 0.0, 1600.0);
 }
 int main(int argc, char** argv)
 {
 
-    //PlaySound("oniket.wav", NULL, SND_FILENAME| SND_ASYNC);
+    PlaySound("oniket.wav", NULL, SND_FILENAME| SND_ASYNC);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(2000, 1500);
