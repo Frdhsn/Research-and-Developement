@@ -1,0 +1,9 @@
+.heading{            
+              text-align-last: center;
+              /*font-size: 40px;*/
+              color: #70EBFF;
+              font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+.pad100{padding: 100;}
+.pad70{padding: 70;}
