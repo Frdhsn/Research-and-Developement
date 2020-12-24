@@ -1,14 +1,14 @@
 #include<bits/stdc++.h>
+#include <GL/glut.h>
 #include <stdio.h>
 #include <iostream>
-#include <GL/glut.h>
 #include <math.h>
 #include <windows.h>
 #include <mmsystem.h>
 #include <algorithm>
-#include<time.h>
+#include <time.h>
 using namespace std;
-/***** declaring  variables starts ******/
+/***** declaring  global variables starts ******/
 int carStatus = 0;
 int carStatus1 = 0;
 bool f=1;
@@ -35,9 +35,7 @@ float grassy=0;
 
 float move, angle;
 
-/***** declaring  variables ends ******/
-
-void grass();
+/***** declaring  global variables ends ******/
 
 void DrawCircle(float cx, float cy, float r, int num_segments)
 {
@@ -54,6 +52,7 @@ void DrawCircle(float cx, float cy, float r, int num_segments)
     }
     glEnd();
 }
+
 void elipse(float cx, float cy, float rx,float ry, int num_segments)
 {
 
@@ -70,7 +69,6 @@ void elipse(float cx, float cy, float rx,float ry, int num_segments)
     }
     glEnd();
 }
-
 void drawSun(int x)
 {
     glColor3f(1.0, 0.8, 0.5);
@@ -84,9 +82,6 @@ void drawSun(int x)
     glColor3f(1.0, 1.0, 0.5);
     DrawCircle(800, 1000, 30, 1000);
 }
-
-
-
 void hills(int x)
 {
 
@@ -120,11 +115,8 @@ void hills(int x)
     DrawCircle(2000, 600, 500-2*x, 2000);//4
 
 }
-
 void megh(int x)
 {
-
-
     glColor3f(1.0, 1.0, 1.0);
     DrawCircle(-100, 1300, 60, 2000);//1
     DrawCircle(-200,1300, 80, 2000);//2
@@ -175,9 +167,7 @@ void megh(int x)
 
 
 }
-
 void movemegh()
-
 {
     if (meghStatus == 1)
     {
@@ -197,7 +187,6 @@ void movemegh()
     glPopMatrix();
 
 }
-
 void moveSun()
 {
 
@@ -290,7 +279,6 @@ void effect()
         glEnd();
     }
 }
-
 void road()
 {
 
@@ -445,7 +433,6 @@ void tree(int y)
     		glEnd();
     */
 }
-
 void house(int y)
 {
 
@@ -684,8 +671,6 @@ void grass()
 
 
 }
-
-
 void face()
 {
     float i=60,x=370,y=0;
@@ -1018,7 +1003,6 @@ void lyrics()
     else if(t<400.2)
         RenderString(600, 1500, GLUT_BITMAP_TIMES_ROMAN_24, "\\m/ \\m/ guitar solo \\m/ \\m/");
 }
-
 void table()
 {
     float i=1.5,x=50,y=-300;
@@ -1086,8 +1070,6 @@ void table()
 }
 void myDisplay(void)
 {
-
-
     //face();
     sky();
     moveSun();
@@ -1124,13 +1106,6 @@ int main(int argc, char** argv)
 
     PlaySound("oniket.wav", NULL, SND_FILENAME| SND_ASYNC);
     glutInit(&argc, argv);
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(2000, 1500);
     glutInitWindowPosition(0, 0);
