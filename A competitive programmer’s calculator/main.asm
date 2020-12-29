@@ -1,3 +1,4 @@
+;.stack 100h
 data segment
     ten dw 10d 
     ;a,b,c,d are for complex number operations
@@ -32,6 +33,7 @@ data segment
     enter_cnum1_b db "Enter the value of b: ",13,10,'$'
     enter_cnum2_c db "Enter the value of c: ",13,10,'$'
     enter_cnum2_d db "Enter the value of d: ",13,10,'$'
+    str db 6 dup('$')
 ends
 
 stack segment
@@ -392,6 +394,7 @@ code segment
         pop  ax
         push dx
         call print_number
+        print ' '
         print 'R'
         print '='
         pop dx
@@ -630,31 +633,29 @@ ret
             jmp loop2
             print_complete:
     ret 
-
-                                      
-;#####################################
-;#####this subroutine prints a line###
-;#####################################
-; high 4 bits set background color and low 4 bits set foreground color.
-
-; hex    bin        color
-; 
-; 0      0000      black
-; 1      0001      blue
-; 2      0010      green
-; 3      0011      cyan
-; 4      0100      red
-; 5      0101      magenta
-; 6      0110      brown
-; 7      0111      light gray
-; 8      1000      dark gray
-; 9      1001      light blue
-; a      1010      light green
-; b      1011      light cyan
-; c      1100      light red
-; d      1101      light magenta
-; e      1110      yellow
-; f      1111      white    
+         
+    print_modulo: 
+    ;CONVERT NUMBER TO STRING. 
+          mov  bx, dx           ; here should be the register
+          mov  ax, bx      ;ANY NUMBER.
+          call number2string  ;CONVERT AX. RESULT IN "STR".
+        
+        ;DISPLAY STRING.
+          mov  ah, 9
+          mov  dx, offset str  ;NUMBER CONVERTED.
+          int  21h
+    ret    
+    print_div: 
+    ;CONVERT NUMBER TO STRING. 
+          ;mov  bx, dx           ; here should be the register
+          ;mov  ax, bx      ;ANY NUMBER.
+          call number2string  ;CONVERT AX. RESULT IN "STR".
+        
+        ;DISPLAY STRING.
+          mov  ah, 9
+          mov  dx, offset str  ;NUMBER CONVERTED.
+          int  21h
+    ret           
 print_line: 
             ;printing the line
            ;mov bl,063  ;desired color
@@ -757,4 +758,32 @@ ends
 ; c      1100      light red
 ; d      1101      light magenta
 ; e      1110      yellow
-; f      1111      white
+; f      1111      white 
+;------------------------------------------
+
+;NUMBER TO CONVERT MUST ENTER IN AX.
+;ALGORITHM : EXTRACT DIGITS ONE BY ONE, STORE
+;THEM IN STACK, THEN EXTRACT THEM IN REVERSE
+;ORDER TO CONSTRUCT STRING.
+
+proc number2string
+  mov  bx, 10 ;DIGITS ARE EXTRACTED DIVIDING BY 10.
+  mov  cx, 0 ;COUNTER FOR EXTRACTED DIGITS.
+cycle1:       
+  mov  dx, 0 ;NECESSARY TO DIVIDE BY BX.
+  div  bx ;DX:AX / 10 = AX:QUOTIENT DX:REMAINDER.
+  push dx ;PRESERVE DIGIT EXTRACTED FOR LATER.
+  inc  cx ;INCREASE COUNTER FOR EVERY DIGIT EXTRACTED.
+  cmp  ax, 0  ;IF NUMBER IS
+  jne  cycle1 ;NOT ZERO, LOOP. 
+;NOW RETRIEVE PUSHED DIGITS.
+  mov  si, offset str
+cycle2:  
+  pop  dx        
+  add  dl, 48 ;CONVERT DIGIT TO CHARACTER.
+  mov  [ si ], dl
+  inc  si
+  loop cycle2  
+
+  ret
+endp
