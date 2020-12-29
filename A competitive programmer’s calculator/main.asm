@@ -5,32 +5,33 @@ data segment
     b dw ?
     c dw ?
     d dw ?  
-    wellcome db '         Well Come !',13, 10 ,'$'
-    exit    db 'Press any otherkey to terminate',13,10,'$'
-    select db 'Select an option',13,10,'$'
-    option1 db 'a=Addition',13,10,'$'
-    option2 db 'b=Subtraction',13,10,'$'
-    option3 db 'c=Multiplication',13,10,'$'
-    option4 db 'd=Division',13,10,'$'
-    option5 db 'e=Power_2',13,10,'$'
-    option6 db 'f=Power_3',13,10,'$'
-    option7 db 'g=Power_n',13,10,'$'
-    option8 db 'h=Factorial',13,10,'$'
-    option9 db 'i=Complex Add(a+bi)+(c+di)',13,10,'$'
-    option10 db 'j=Complex Sub(a+bi)-(c+di)',13,10,'$'
-    option11 db 'k=Complex Mult(a+bi)X(c+di)',13,10,'$'
-    option12 db 'l=Complex Div(a+bi)/(c+di)',13,10,'$'
-    project db 'Colorfull Scientific Calculator',13,10,'$'
+    wellcome db ' ----------------------Greetings !--------------------',13, 10 ,'$'
+    project  db '| CP Calculator: A competitive programmers calculator |',13,10,'$' 
+    dash     db ' ----------------------------------------------------- ',13,10,'$'
+    exit     db '|              Press any other key to terminate       |',13,10,'$'
+    select   db '|                   Select an option                  |',13,10,'$'
+    option1  db '|              Press a to do Addition                 |',13,10,'$'
+    option2  db '|              Press b to do Subtraction              |',13,10,'$'
+    option3  db '|              Press c to do Multiplication           |',13,10,'$'
+    option4  db '|              Press d to do Division                 |',13,10,'$'
+    option5  db '|              Press e to find Power_2(square)        |',13,10,'$'
+    option6  db '|              Press f to find Power_3(cube)          |',13,10,'$'
+    option7  db '|              Press g to find Power_n(a^n)           |',13,10,'$'
+    option8  db '|              Press h to find a! (Factorial)         |',13,10,'$'
+    option9  db '|  Press i to do Complex Addition(a+bi)+(c+di)        |',13,10,'$'
+    option10 db '|  Press j to do Complex Subtraction(a+bi)-(c+di)     |',13,10,'$'
+    option11 db '|  Press k to do Complex Multiplication(a+bi)X(c+di)  |',13,10,'$'
+    option12 db '|  Press l to do Complex Division(a+bi)/(c+di)        |',13,10,'$'
     
-    enter_number1 db 'Enter first number','$'
-    enter_number2 db 'Enter second number','$'
-    answer db 'Answer= ','$'
-    nextline db 13,10,'$'
+    enter_number1 db 'Enter the first number: ','$'
+    enter_number2 db 'Enter the second number: ','$'
+    answer        db 'Answer= ','$'
+    nextline      db 13,10,'$'
    
-    enter_cnum1_a db "Enter number on a",13,10,'$'
-    enter_cnum1_b db "Enter number on b",13,10,'$'
-    enter_cnum2_c db "Enter number on c",13,10,'$'
-    enter_cnum2_d db "Enter number on d",13,10,'$'
+    enter_cnum1_a db "Enter the value of a: ",13,10,'$'
+    enter_cnum1_b db "Enter the value of b: ",13,10,'$'
+    enter_cnum2_c db "Enter the value of c: ",13,10,'$'
+    enter_cnum2_d db "Enter the value of d: ",13,10,'$'
 ends
 
 stack segment
@@ -54,13 +55,16 @@ code segment
         pop ax     
         
         mov di,0
-   menu:
+    menu:
         lea dx, wellcome
         call print_line
         
         lea dx, project
         call print_line
-
+        
+        lea dx, dash
+        call print_line
+        
         lea dx, option1
         call print_line   
        
@@ -72,7 +76,10 @@ code segment
        
         lea dx, option4
         call print_line   
-       
+        
+        lea dx, dash
+        call print_line
+        
         lea dx, option5
         call print_line   
        
@@ -84,7 +91,10 @@ code segment
        
         lea dx, option8
         call print_line   
-       
+        
+        lea dx, dash
+        call print_line
+        
         lea dx, option9
         call print_line   
        
@@ -97,12 +107,17 @@ code segment
         lea dx, option12
         call print_line
         
+        lea dx, dash
+        call print_line
+        
         lea dx, exit
         call print_line
      
         lea dx, select
         call print_line   
-     
+        
+        lea dx, dash
+        call print_line
   
         call get_choice ;making a selection we get value in al      
         cmp al,61h
@@ -307,11 +322,11 @@ code segment
     call  clear_screen
     jmp   menu
  ;#################################################################
- ;Following functions are for integer add, sub, multi and divide   
+ ;Following functions are for integer add, sub, multi and divide ##  
  ;#################################################################       
     addition:    
     pusha
-       call get_two_values ;provides values in ax and bx
+        call get_two_values ;provides values in ax and bx
   
         add ax,bx  
         
@@ -323,7 +338,7 @@ code segment
         
         pop ax;getting answer back   
         call print_number
-        popa 
+    popa 
   call  clear_screen
   jmp   menu    
     subtraction:
@@ -388,7 +403,7 @@ code segment
   call  clear_screen
   jmp   menu
 ;#################################################################
-;Following are for complex number add, sub, multi and divide   
+;Following are for complex number add, sub, multi and divide    ##
 ;#################################################################       
     complex_add:
         pusha
@@ -530,7 +545,7 @@ code segment
   call  clear_screen
     jmp   menu
 ;#####################################  
-;#####these routines take input#####
+;#####these routines take input#######
 ;#####################################
 get_two_complex:
   call print_nextline
@@ -558,7 +573,7 @@ get_two_complex:
         mov d,ax
         call print_nextline
   ret
- get_two_values:             
+get_two_values:             
             ;printing nextline
             lea dx,nextline
             mov ah, 9
@@ -619,10 +634,33 @@ ret
                                       
 ;#####################################
 ;#####this subroutine prints a line###
-;#####################################    
-    print_line: 
+;#####################################
+; high 4 bits set background color and low 4 bits set foreground color.
+
+; hex    bin        color
+; 
+; 0      0000      black
+; 1      0001      blue
+; 2      0010      green
+; 3      0011      cyan
+; 4      0100      red
+; 5      0101      magenta
+; 6      0110      brown
+; 7      0111      light gray
+; 8      1000      dark gray
+; 9      1001      light blue
+; a      1010      light green
+; b      1011      light cyan
+; c      1100      light red
+; d      1101      light magenta
+; e      1110      yellow
+; f      1111      white    
+print_line: 
             ;printing the line
-           mov bl,063  ;desired color
+           ;mov bl,063  ;desired color
+           ;mov bl,001  ; background black, text blue
+           ;mov bl,00110000b  ; background cyan, text black
+           mov bl,10011111b
            mov ah, 9 
            mov al,0  
            int 10h   ;to printing colors
@@ -637,9 +675,9 @@ ret
             mov ah, 9
             int 21h
     ret                               
-;#####################################
+;##########################################
 ;this subroutine takes input from keyboard#
-;#####################################
+;##########################################
     get_choice:
         ;get input from keyboard
         MOV     AH, 00h
@@ -649,9 +687,9 @@ ret
         INT     10h
     ret                               
     
-;#####################################
+;############################################################
 ;#####this subroutine takes number/operand from keyboard#####  
-;#####################################
+;############################################################
     get_operand:
         ;get input from keyboard
         MOV     AH, 00h
@@ -699,4 +737,24 @@ ret
         pop ax;getting answer back   
         call print_number
    ret
-ends
+ends   
+; high 4 bits set background color and low 4 bits set foreground color.
+
+; hex    bin        color
+; 
+; 0      0000      black
+; 1      0001      blue
+; 2      0010      green
+; 3      0011      cyan
+; 4      0100      red
+; 5      0101      magenta
+; 6      0110      brown
+; 7      0111      light gray
+; 8      1000      dark gray
+; 9      1001      light blue
+; a      1010      light green
+; b      1011      light cyan
+; c      1100      light red
+; d      1101      light magenta
+; e      1110      yellow
+; f      1111      white
